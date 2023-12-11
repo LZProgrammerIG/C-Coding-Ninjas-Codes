@@ -38,7 +38,51 @@ int LCS_DP(string s, string t){
   // The first row and first column will remain 0 as LCS of two strings 
   // with one having size 0 is 0.
 
+  /* 
+  Code Logic:- 
+
+  The (i,j) cell represents the size of LCS when the size of s and t
+  is i and j respectively.
+  Since we are deleting elements from the left so when the size of,
+  say "abcd" is 2, then that means the string now is "cd". 
   
+  If the first character of both strings matches, increment the
+  answer by 1 and move forward in both strings (i.e we deleted the 
+  first element in both string and are now searching for the size 
+  of LCS in remaining strings).
+
+  If the first element does not matches then we have 3 choices:-
+    1. Move forward in String s.
+    2. Move forward in String t.
+    3. Move forward in Both Strings.
+  
+  This process continues until either of the string becomes of length 0.
+  */
+
+  // Filling the rest of cells.
+  for (int i = 1; i <= m; i++){
+    for (int j = 1; j <= n; j++){
+
+      // Checking if the first element of s and t matches.
+      // If yes, then increase the value of ans by 1.
+      if (s[m-i] == t[n-j]){
+        arra[i][j] = 1 + arra[i - 1][j - 1];
+      }else{
+        int ans = max(arra[i][j-1], max(arra[i-1][j], arra[i-1][j-1]));
+        arra[i][j] = ans;
+      }
+    }
+  }
+
+  // Deleting the Dynamic Array before returning the final answer.
+  int ans = arra[m][n];
+  for (int i = 0; i <= m; i++){
+    delete[] arra[i];
+  }
+  delete[] arra;
+
+  // Returning the final answer.
+  return ans;
 }
 
 int main(){
